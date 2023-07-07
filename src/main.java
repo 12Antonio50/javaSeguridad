@@ -11,32 +11,32 @@ public class main {
         System.out.println("1.- Vamos a crear las llaves publica y privada de RSA");
 
         KeyPairGenerator keygen = KeyPairGenerator.getInstance("RSA", "BC"); // Genera un par de claves RSA
-        keygen.initialize(2048); // Tamaño de clave: 2048 bits
+        keygen.initialize(2048); // Tamano de clave: 2048 bits
 
         KeyPair clavesRSA = keygen.genKeyPair(); // Genera el par de claves
 
-        PublicKey clavePublica = clavesRSA.getPublic(); // Obtiene la clave pública
+        PublicKey clavePublica = clavesRSA.getPublic(); // Obtiene la clave publica
         PrivateKey clavePrivada = clavesRSA.getPrivate(); // Obtiene la clave privada
 
-        System.out.println("Clave publica: " + clavePublica); // Imprime la clave pública
+        System.out.println("Clave publica: " + clavePublica); // Imprime la clave publica
         System.out.println("Clave privada: " + clavePrivada); // Imprime la clave privada
 
         System.out.println("2.- Introduzca el texto que desea cifrar maximo 64 caracteres");
 
-        byte[] bufferPlano = leerLinea(System.in); // Lee el texto plano desde la entrada estándar
+        byte[] bufferPlano = leerLinea(System.in); // Lee el texto desde la entrada
 
         Cipher cifrador = Cipher.getInstance("RSA", "BC"); // Crea un objeto Cipher para cifrar/descifrar RSA
 
-        cifrador.init(Cipher.ENCRYPT_MODE, clavePublica); // Inicializa el cifrador en modo de cifrado con la clave pública
+        cifrador.init(Cipher.ENCRYPT_MODE, clavePrivada); // Inicializa el cifrador en modo de cifrado con la clave privada
 
-        System.out.println("3.- Ciframos con la clave publica:");
+        System.out.println("3.- Ciframos con la clave privada:");
         byte[] bufferCifrado = cifrador.doFinal(bufferPlano); // Cifra el texto plano y obtiene el texto cifrado
         System.out.println("Texto Cifrado:");
         mostrarBytes(bufferCifrado); // Muestra el texto cifrado
 
-        cifrador.init(Cipher.DECRYPT_MODE, clavePrivada); // Inicializa el cifrador en modo de descifrado con la clave privada
+        cifrador.init(Cipher.DECRYPT_MODE, clavePublica); // Inicializa el cifrador en modo de descifrado con la clave publica
 
-        System.out.println("4.- Desciframos con la clave privada:");
+        System.out.println("4.- Desciframos con la clave publica:");
         byte[] bufferPlano2 = cifrador.doFinal(bufferCifrado); // Descifra el texto cifrado y obtiene el texto plano
         String textoDescifrado = new String(bufferPlano2);
         System.out.println("Texto Descifrado: " + textoDescifrado);
